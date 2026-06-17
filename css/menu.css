@@ -1,0 +1,44 @@
+@font-face {
+    font-family: 'Paperozi';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-8ExtraBold.woff2') format('woff2');
+    font-weight: 800;
+    font-display: swap;
+}
+
+header>a{
+    margin: 0;
+    padding: 0;
+    color: white;
+    text-decoration: none;
+}
+header{
+    background-color: #212121;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    
+}
+body{
+    margin: 0;
+    padding: 0;
+}
+
+#login{
+    margin-left: auto;
+    color: black;
+}
+
+
+.text-l{
+    margin-left:auto;
+    margin-right: 20px;
+}
+
+.text-r{
+    margin-right: auto;
+}
+
+.logo{
+    font-family: 'Paperozi',sans-serif;
+
+}

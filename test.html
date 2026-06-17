@@ -1,143 +1,359 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Arduino Sensor Guide</title>
-  <style>
-    * {
-  box-sizing: border-box;
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circuit Design</title>
+    <style>
+      * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background-color: #f8fafc;
-  color: #222;
-  line-height: 1.6;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #07111f, #0b1f3a);
+    color: white;
 }
 
-.site-header {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  background-color: white;
-  padding: 20px 40px;
-  border-bottom: 1px solid #e5e7eb;
+/* Header */
+header {
+    width: 100%;
+    height: 70px;
+    padding: 0 60px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    background-color: rgba(5, 15, 30, 0.9);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.site-header h1 {
-  margin: 0 0 12px;
-  color: #2563eb;
+.logo {
+    color: white;
+    text-decoration: none;
+    font-size: 24px;
+    font-weight: bold;
 }
 
-.nav-menu {
-  display: flex;
-  gap: 24px;
-  list-style: none;
-  margin: 0;
-  padding: 0;
+nav {
+    display: flex;
+    gap: 35px;
 }
 
-.nav-menu a {
-  font-weight: 700;
+nav a {
+    color: #cfd8e3;
+    text-decoration: none;
+    font-size: 16px;
 }
 
-.nav-menu a:hover {
-  color: #2563eb;
+nav a:hover {
+    color: #38bdf8;
 }
 
+#login {
+    padding: 10px 22px;
+    border: none;
+    border-radius: 20px;
+
+    background-color: #38bdf8;
+    color: #06111f;
+
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#login:hover {
+    background-color: #7dd3fc;
+}
+
+/* Hero */
 .hero {
-  width: 90%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 80px 0;
-  text-align: center;
+    min-height: 620px;
+    padding: 80px 60px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 60px;
 }
 
-.hero h2 {
-  font-size: 40px;
-  margin-bottom: 16px;
+.hero-text {
+    max-width: 600px;
 }
 
-.sensor-list {
-  width: 90%;
-  max-width: 1200px;
-  margin: 0 auto 80px;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 24px;
+.tag {
+    color: #38bdf8;
+    font-weight: bold;
+    margin-bottom: 20px;
 }
 
-.sensor-card {
-  background-color: white;
-  padding: 24px;
-  border: 1px solid #e5e7eb;
-  border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  transition: transform 0.3s ease;
+.hero h1 {
+    font-size: 56px;
+    line-height: 1.2;
+    margin-bottom: 25px;
 }
 
-.sensor-card:hover {
-  transform: translateY(-8px);
+.description {
+    color: #cbd5e1;
+    font-size: 18px;
+    line-height: 1.7;
+    margin-bottom: 35px;
 }
 
-.sensor-card img {
-  width: 100%;
-  height: 180px;
-  object-fit: cover;
-  border-radius: 12px;
+.hero-buttons {
+    display: flex;
+    gap: 15px;
 }
 
-@media (max-width: 768px) {
-  .site-header {
-    padding: 16px 20px;
-  }
-
-  .nav-menu {
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .hero h2 {
-    font-size: 28px;
-  }
+.primary-btn,
+.secondary-btn {
+    padding: 14px 26px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: bold;
 }
-  </style>
+
+.primary-btn {
+    background-color: #38bdf8;
+    color: #06111f;
+}
+
+.secondary-btn {
+    border: 1px solid #38bdf8;
+    color: #38bdf8;
+}
+
+/* Hero Card */
+.hero-card {
+    width: 380px;
+    height: 300px;
+    border-radius: 30px;
+
+    background-color: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.circuit-box {
+    position: relative;
+    width: 250px;
+    height: 180px;
+}
+
+.line {
+    position: absolute;
+    top: 90px;
+    left: 20px;
+
+    width: 210px;
+    height: 4px;
+    background-color: #38bdf8;
+}
+
+.chip {
+    position: absolute;
+    top: 50px;
+    left: 85px;
+
+    width: 80px;
+    height: 80px;
+    border-radius: 12px;
+
+    background-color: #111827;
+    border: 2px solid #38bdf8;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-weight: bold;
+}
+
+.led {
+    position: absolute;
+    top: 78px;
+    right: 0;
+
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background-color: #22c55e;
+    box-shadow: 0 0 20px #22c55e;
+}
+
+.resistor {
+    position: absolute;
+    top: 78px;
+    left: 0;
+
+    width: 45px;
+    height: 25px;
+    border-radius: 12px;
+    background-color: #f59e0b;
+}
+
+/* Features */
+.features,
+.parts {
+    padding: 70px 60px;
+}
+
+.features h2,
+.parts h2 {
+    font-size: 34px;
+    margin-bottom: 35px;
+}
+
+.feature-list {
+    display: flex;
+    gap: 25px;
+}
+
+.feature-card {
+    flex: 1;
+    padding: 30px;
+    border-radius: 20px;
+
+    background-color: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.feature-card h3 {
+    color: #38bdf8;
+    margin-bottom: 15px;
+}
+
+.feature-card p {
+    color: #cbd5e1;
+    line-height: 1.6;
+}
+
+/* Parts */
+.part-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.part-card {
+    padding: 18px 30px;
+    border-radius: 14px;
+
+    background-color: rgba(56, 189, 248, 0.12);
+    border: 1px solid rgba(56, 189, 248, 0.4);
+
+    color: #e0f2fe;
+    font-weight: bold;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    header {
+        padding: 0 25px;
+    }
+
+    nav {
+        display: none;
+    }
+
+    .hero {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 60px 25px;
+    }
+
+    .hero h1 {
+        font-size: 40px;
+    }
+
+    .feature-list {
+        flex-direction: column;
+    }
+
+    .hero-card {
+        width: 100%;
+    }
+}
+    </style>
 </head>
 <body>
-  <header class="site-header">
-    <h1>Arduino Sensor Guide</h1>
-    <nav>
-      <ul class="nav-menu">
-        <li><a href="#home">홈</a></li>
-        <li><a href="#sensors">센서 목록</a></li>
-        <li><a href="#circuits">회로 예제</a></li>
-        <li><a href="#contact">문의</a></li>
-      </ul>
-    </nav>
-  </header>
 
-  <main>
-    <section class="hero" id="home">
-      <h2>아두이노 센서를 쉽게 이해해보자</h2>
-      <p>센서의 기능, 연결 방법, 사용 예제를 정리한 사이트입니다.</p>
-    </section>
+    <header>
+        <a href="main.html" class="logo">Circuit Design</a>
 
-    <section class="sensor-list" id="sensors">
-      <h2>센서 목록</h2>
+        <nav>
+            <a href="look_a_element.html">회로 부품 설명 보기</a>
+            <a href="make_a_circuit.html">회로 설계하기</a>
+        </nav>
 
-      <article class="sensor-card">
-        <img src="ultrasonic.jpg" alt="HC-SR04 초음파 센서">
-        <h3>초음파 센서</h3>
-        <p>초음파를 이용해 물체와의 거리를 측정합니다.</p>
-        <a href="ultrasonic.html">자세히 보기</a>
-      </article>
-    </section>
-  </main>
+        <button id="login">로그인</button>
+    </header>
 
-  <footer>
-    <p>© 2026 Arduino Sensor Guide</p>
-  </footer>
+    <main>
+        <section class="hero">
+            <div class="hero-text">
+                <p class="tag">Electronic Circuit Learning Platform</p>
+                <h1>회로를 이해하고<br>직접 설계해보세요</h1>
+                <p class="description">
+                    저항, LED, 센서 같은 회로 부품의 역할을 배우고,
+                    직접 회로를 구성하며 전자회로의 구조를 이해할 수 있습니다.
+                </p>
+
+                <div class="hero-buttons">
+                    <a href="make_a_circuit.html" class="primary-btn">회로 설계 시작하기</a>
+                    <a href="look_a_element.html" class="secondary-btn">부품 설명 보기</a>
+                </div>
+            </div>
+
+            <div class="hero-card">
+                <div class="circuit-box">
+                    <div class="line"></div>
+                    <div class="chip">IC</div>
+                    <div class="led"></div>
+                    <div class="resistor"></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="features">
+            <h2>주요 기능</h2>
+
+            <div class="feature-list">
+                <div class="feature-card">
+                    <h3>부품 설명</h3>
+                    <p>저항, LED, 센서, 스위치 등 회로 부품의 역할과 사용법을 확인할 수 있습니다.</p>
+                </div>
+
+                <div class="feature-card">
+                    <h3>회로 설계</h3>
+                    <p>필요한 부품을 선택하고 직접 회로를 구성하며 연결 구조를 학습할 수 있습니다.</p>
+                </div>
+
+                <div class="feature-card">
+                    <h3>예제 회로</h3>
+                    <p>기본 LED 회로, 센서 회로, 아두이노 회로 등 다양한 예제를 볼 수 있습니다.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="parts">
+            <h2>대표 회로 부품</h2>
+
+            <div class="part-list">
+                <div class="part-card">저항</div>
+                <div class="part-card">LED</div>
+                <div class="part-card">가변저항</div>
+                <div class="part-card">스위치</div>
+                <div class="part-card">센서</div>
+            </div>
+        </section>
+    </main>
+
 </body>
 </html>

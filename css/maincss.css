@@ -4,12 +4,7 @@
     font-weight: 700;
     font-display: swap;
 }
-@font-face {
-    font-family: 'Paperozi';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-8ExtraBold.woff2') format('woff2');
-    font-weight: 800;
-    font-display: swap;
-}
+
 
 *{
     text-decoration: none;
@@ -17,34 +12,23 @@
     padding: 0;
 }
 
-header{
-    background-color: #323232;
+.hero {
+    min-height: 620px;
+    padding: 80px 60px;
+
     display: flex;
     align-items: center;
-    padding: 10px;
+    justify-content: space-between;
+    gap: 60px;
 }
 
-header>a{
-    color: white;
+.hero-text {
+    max-width: 600px;
 }
 
-#login{
-    margin-left: auto;
-}
 
-.text-l{
-    margin-left:auto;
-    margin-right: 20px;
-}
 
-.text-r{
-    margin-right: ;
-}
 
-.logo{
-    font-family: 'Paperozi',sans-serif;
-
-}
 
 .card_part{
     
@@ -77,3 +61,5 @@ header>a{
     width: 240px;
     border-radius: 10%;
 }
+
+
