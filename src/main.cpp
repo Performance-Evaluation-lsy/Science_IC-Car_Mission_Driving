@@ -1,6 +1,9 @@
 #include <Arduino.h>
 #include <AFMotor.h>
+#include <Servo.h>
 
+Servo servo_l;
+Servo servo_r;
 // M1 단자에 연결된 DC 모터
 AF_DCMotor motor1(1);
 AF_DCMotor motor2(2);
@@ -39,11 +42,25 @@ void Backward(uint8_t speed){
     motor4.run(BACKWARD);
 }
 
+void close(){
+    servo_l.write(180);
+    servo_r.write(0);
+}
+void open(){
+    servo_l.write(90);
+    servo_r.write(90);
+}
+
 void setup() {
     Serial.begin(9600);
 
+    servo_l.attach(9);
+    servo_r.attach(10);
+
     stop();
      //속도는 0~255까지
+
+    open();
 
     Serial.println("L293D DC Motor Test Start");
 }
