@@ -1,0 +1,58 @@
+@font-face {
+    font-family: 'CookieRun';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_twelve@1.0/CookieRunOTF-Bold00.woff') format('woff');
+    font-weight: 700;
+    font-display: swap;
+}
+
+*{
+    text-decoration: none;
+    margin: 0;
+    padding: 0;
+}
+
+
+.menu{
+    background-color: #323232;
+    list-style: none;
+    display: flex;
+}
+.menu>li>a{
+    color: white;
+}
+
+.logo{
+    font: 'CookieRun'sans-serif;
+}
+
+.card_part{
+    
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    border-radius: 10%;
+    width: 200px;
+    margin: 10px;
+    padding: 12px;
+}
+.card_part>a{
+    color: black;
+}
+.card_part>a>img{
+    width: 200px;
+    border-radius: 10%;
+}
+
+.card_circuit{
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    border-radius: 10%;
+    width: 240px;
+    margin: 10px;
+    padding: 10px;
+}
+
+.card_circuit>a{
+    color: black;
+}
+.card_circuit>a>img{
+    width: 240px;
+    border-radius: 10%;
+}
