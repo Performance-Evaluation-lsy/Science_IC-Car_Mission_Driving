@@ -3,6 +3,7 @@
 #include <Servo.h>
 #include <SoftwareSerial.h>
 
+
 #define Forward 'F'
 #define Backward 'B'
 #define Right 'R'
@@ -12,7 +13,9 @@
 #define Open 'X'
 #define Close 'x'
 
-SoftwareSerial BT(A5,A4);
+#define BT_RXD A5
+#define BT_TXD A4
+SoftwareSerial BT(BT_RXD, BT_TXD);
 // A5 = Arduino RX, HC-05 TXD와 연결
 // A4 = Arduino TX, HC-05 RXD와 연결
 
@@ -53,25 +56,25 @@ void backward(){
 }
 
 void left(){
-    motor1.run(FORWARD);
-    motor2.run(FORWARD);
+    motor1.run(BACKWARD);
+    motor2.run(BACKWARD);
     motor3.run(FORWARD);
     motor4.run(FORWARD);
 }
 void right(){
-    motor1.run(BACKWARD);
-    motor2.run(BACKWARD);
+    motor1.run(FORWARD);
+    motor2.run(FORWARD);
     motor3.run(BACKWARD);
     motor4.run(BACKWARD);
 }
 
 void close(){
-    servo_l.write(180);
-    servo_r.write(0);
+    servo_l.write(120);
+    servo_r.write(30);
 }
 void open(){
-    servo_l.write(90);
-    servo_r.write(90);
+    servo_l.write(30);
+    servo_r.write(120);
 }
 
 void choice(char command){
@@ -109,7 +112,6 @@ void choice(char command){
         case '9': set_speed(255); break;
     }
 }
-
 void setup() {
     Serial.begin(9600);
     BT.begin(9600);
@@ -117,14 +119,12 @@ void setup() {
     servo_l.attach(9);
     servo_r.attach(10);
 
+    set_speed(150);
     stop();
-     //속도는 0~255까지
-
     open();
 
     Serial.println("L293D DC Motor Test Start");
 }
-
 void loop() {
     if(BT.available()){
         char command = BT.read();
@@ -134,3 +134,7 @@ void loop() {
         choice(command);
     }
 }
+
+
+
+
