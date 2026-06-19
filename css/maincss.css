@@ -10,6 +10,7 @@
     text-decoration: none;
     margin: 0;
     padding: 0;
+    
 }
 
 .hero {
@@ -26,6 +27,17 @@
     max-width: 600px;
 }
 
+
+#main-img{
+    border-radius: 20px;
+    width: 0;
+}
+
 main{
     background-color: #323232;
+    background-image: url('/Circuit_Design/imgs/메인배경.png');
+    min-height: 100vh;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
