@@ -28,14 +28,26 @@
 }
 
 
+.main_content{
+    display: flex;
+    position: absolute;
+    top: 200px;
+    left: 300px;
+}
+
+
 #main-img{
     border-radius: 20px;
-    width: 0;
+    width: 400px;
+    box-shadow: 0px 8px 10px black;
+}
+#main_text{
+    color: whitesmoke;
 }
 
 main{
     background-color: #323232;
-    background-image: url('/Circuit_Design/imgs/메인배경.png');
+    background-image: url('/Circuit_Design/imgs/매인\ 배경\ 최종.png');
     min-height: 100vh;
     background-size: cover;
     background-position: center;

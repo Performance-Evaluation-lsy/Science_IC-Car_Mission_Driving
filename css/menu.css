@@ -15,7 +15,7 @@ header{
     background-color: #212121;
     display: flex;
     align-items: center;
-    padding: 10px;
+    padding: 15px;
     
 }
 body{
@@ -32,10 +32,23 @@ body{
 .text-l{
     margin-left:auto;
     margin-right: 20px;
+    transition: 0.3s ease;
+}
+
+.text-l:hover{
+    transform: translateY(-3px);
+    font-weight: 700;
 }
 
 .text-r{
     margin-right: auto;
+
+    transition: 0.3s ease;
+}
+
+.text-r:hover{
+    transform: translateY(-3px);
+    font-weight: 700;
 }
 
 .logo{
