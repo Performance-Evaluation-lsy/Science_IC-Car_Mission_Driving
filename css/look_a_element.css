@@ -1,0 +1,78 @@
+*{
+    text-decoration: none;
+    margin: 0;
+    padding: 0;
+}
+
+
+main{
+    background-color: #323232;
+    background-image: url('/Circuit_Design/imgs/모듈\ 종류\ 선택.png');
+    min-height: 100vh;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.first{
+    display: flex;
+
+
+    padding-top: 9%;
+    justify-content: center;
+
+}
+.second{
+    display: flex;
+
+    justify-content: center;
+}
+
+
+#card_senser,
+#card_print,
+#card_motor,
+#card_Communication{
+    width: fit-content;
+    
+    border-radius: 10%;
+    
+    
+    margin: 10px;
+    padding: 10px;
+    background-color: white;
+
+    transition: 0.3s ease;
+}
+
+#card_senser:hover,
+#card_print:hover,
+#card_motor:hover,
+#card_Communication:hover{
+    transform: translateY(-10px);
+    box-shadow: 0px 10px 12px rgba(0,0,0,10);
+}
+
+#card_senser>a,
+#card_print>a,
+#card_motor>a,
+#card_Communication>a{
+    color: black;
+}
+
+#card_senser>a>img,
+#card_motor>a>img
+{
+    width: clamp(200px,5vw,1000px);
+    
+    border-radius: 10%;
+    
+}
+
+#card_print>a>img,
+#card_Communication>a>img{
+    width: clamp(200px,7vw,1000px);
+    
+    border-radius: 10%;
+    
+}

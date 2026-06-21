@@ -47,8 +47,8 @@
 
 main{
     background-color: #323232;
-    background-image: url('/Circuit_Design/imgs/매인\ 배경\ 최종.png');
-    min-height: 100vh;
+    background-image: url('../imgs/메인\ 배경.png');
+    min-height: 120vh;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -63,14 +63,18 @@ main{
 }
 
 .card_element{
-    width: fit-content;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     border-radius: 10%;
     
     margin: 10px;
     padding: 12px;
     background-color: white;
     margin-right: 80px;
+
+    transition: 0.3s ease;
+}
+.card_element:hover{
+    transform: translateY(-10px);
+    box-shadow: 0px 10px 12px rgba(0,0,0,10);
 }
 .card_element>a{
     color: black;
@@ -81,14 +85,20 @@ main{
 }
 
 .card_circuit{
-    width: fit-content;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    
     border-radius: 10%;
     
     
     margin: 10px;
     padding: 10px;
     background-color: white;
+
+    transition: 0.3s ease;
+}
+
+.card_circuit:hover{
+    transform: translateY(-10px);
+    box-shadow: 0px 10px 12px rgba(0,0,0,10);
 }
 
 .card_circuit>a{
