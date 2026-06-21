@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>적외선 센서 사용 방법</title>
+  <link rel="stylesheet" href="css/juck.css">
+  <script src="js/menu.js"></script>
+</head>
+
+<body>
+
+<div id="menu"></div>
+  <div class="hero">
+    <h1>적외선 센서 사용 방법</h1>
+    <p>
+      적외선 센서는 눈에 보이지 않는 적외선을 이용해 물체를 감지하는 센서입니다.
+      아두이노, ESP32 같은 보드에서 장애물 감지, 라인트레이서, 거리 감지,
+      자동문, 로봇 회피 장치 등에 자주 사용됩니다.
+    </p>
+  </div>
+
+  <main>
+    <section>
+      <h2>적외선 센서란?</h2>
+      <p>
+        적외선 센서는 적외선 LED에서 빛을 내보낸 뒤,
+        물체에 반사되어 돌아오는 적외선을 수신부에서 감지하는 센서입니다.
+        물체가 가까이 있으면 반사되는 적외선이 많아져 감지 신호가 발생합니다.
+      </p>
+
+      <h3>동작 원리</h3>
+      <ul>
+        <li>적외선 LED가 적외선을 발사합니다.</li>
+        <li>적외선이 물체에 부딪혀 반사됩니다.</li>
+        <li>수신부가 반사된 적외선을 감지합니다.</li>
+        <li>센서가 물체 감지 여부를 디지털 신호로 출력합니다.</li>
+      </ul>
+
+      <div class="notice">
+        적외선 장애물 감지 센서는 보통 <strong>디지털 출력</strong>을 사용합니다.<br>
+        대부분의 모듈은 물체가 감지되면 <strong>LOW</strong> 값을 출력하는 경우가 많습니다.
+      </div>
+    </section>
+
+    <section>
+      <h2>아두이노 연결 방법</h2>
+
+      <table>
+        <thead>
+          <tr>
+            <th>적외선 센서 핀</th>
+            <th>아두이노 연결 핀</th>
+            <th>역할</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>VCC</td>
+            <td>5V</td>
+            <td>전원 공급</td>
+          </tr>
+
+          <tr>
+            <td>GND</td>
+            <td>GND</td>
+            <td>접지</td>
+          </tr>
+
+          <tr>
+            <td>OUT</td>
+            <td>D2</td>
+            <td>물체 감지 신호 출력</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="notice">
+        센서 모듈에 있는 가변저항을 돌리면 감지 거리나 민감도를 조절할 수 있습니다.
+      </div>
+    </section>
+
+    <section>
+      <h2>아두이노 예시 코드</h2>
+      <p>
+        아래 코드는 적외선 센서가 물체를 감지하면 LED를 켜고,
+        감지하지 않으면 LED를 끄는 예시입니다.
+      </p>
+
+      <div class="code-header">
+        <span>Arduino Code</span>
+      </div>
+
+      <pre><code>#include &lt;Arduino.h&gt;
+
+const int irSensorPin = 2;
+const int ledPin = 13;
+
+int sensorValue = 0;
+
+void setup() {
+  Serial.begin(9600);
+
+  pinMode(irSensorPin, INPUT);
+  pinMode(ledPin, OUTPUT);
+}
+
+void loop() {
+  sensorValue = digitalRead(irSensorPin);
+
+  if (sensorValue == LOW) {
+    digitalWrite(ledPin, HIGH);
+    Serial.println("Object Detected");
+  } else {
+    digitalWrite(ledPin, LOW);
+    Serial.println("No Object");
+  }
+
+  delay(300);
+}</code></pre>
+    </section>
+
+    <section>
+      <h2>코드 설명</h2>
+
+      <ul>
+        <li><strong>digitalRead(irSensorPin)</strong>: 적외선 센서의 출력값을 읽습니다.</li>
+        <li><strong>LOW</strong>: 물체가 감지된 상태로 사용하는 경우가 많습니다.</li>
+        <li><strong>HIGH</strong>: 물체가 감지되지 않은 상태로 사용하는 경우가 많습니다.</li>
+        <li><strong>digitalWrite(ledPin, HIGH)</strong>: LED를 켭니다.</li>
+        <li><strong>Serial.println()</strong>: 감지 상태를 시리얼 모니터에 출력합니다.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>사용할 때 주의할 점</h2>
+
+      <ul>
+        <li>검은색 물체는 적외선을 잘 반사하지 않아 감지가 약할 수 있습니다.</li>
+        <li>강한 햇빛이나 외부 적외선 때문에 오작동할 수 있습니다.</li>
+        <li>센서의 감지 거리는 모듈 종류와 가변저항 설정에 따라 달라집니다.</li>
+        <li>물체의 색상, 재질, 각도에 따라 감지 정확도가 달라질 수 있습니다.</li>
+        <li>ESP32에서 사용할 때는 센서 출력 전압이 3.3V 입력에 안전한지 확인해야 합니다.</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <p>적외선 센서 사용 방법 | Circuit Design</p>
+  </footer>
+</body>
+</html>

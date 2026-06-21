@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wi-Fi 통신 모듈 사용 방법</title>
+  <link rel="stylesheet" href="css/wifi.css">
+  <script src="js/menu.js"></script>
+</head>
+
+<body>
+
+    <div id="menu"></div>
+  <div class="hero">
+    <h1>Wi-Fi 통신 모듈 사용 방법</h1>
+    <p>
+      Wi-Fi 통신 모듈은 아두이노 같은 보드가 인터넷이나 같은 네트워크에 연결된 장치와
+      데이터를 주고받을 수 있게 해주는 모듈입니다.
+      대표적으로 ESP8266 ESP-01, ESP8266 NodeMCU, ESP32 등이 사용됩니다.
+    </p>
+  </div>
+
+  <main>
+    <section>
+      <h2>Wi-Fi 통신 모듈이란?</h2>
+      <p>
+        Wi-Fi 통신 모듈은 무선 네트워크를 이용해 데이터를 전송하는 부품입니다.
+        아두이노 UNO처럼 Wi-Fi 기능이 없는 보드는 ESP8266 같은 모듈을 연결해서
+        인터넷 통신 기능을 추가할 수 있습니다.
+      </p>
+
+      <h3>대표적인 Wi-Fi 모듈</h3>
+      <ul>
+        <li><strong>ESP8266 ESP-01</strong>: 아두이노에 연결해서 Wi-Fi 기능을 추가할 때 자주 사용합니다.</li>
+        <li><strong>NodeMCU ESP8266</strong>: ESP8266을 개발보드 형태로 만든 보드입니다.</li>
+        <li><strong>ESP32</strong>: Wi-Fi와 블루투스가 내장된 고성능 보드입니다.</li>
+      </ul>
+
+      <div class="notice">
+        ESP8266 ESP-01은 보통 <strong>UART 시리얼 통신</strong>으로 아두이노와 연결합니다.<br>
+        AT 명령어를 보내서 Wi-Fi 연결, 서버 접속, 데이터 전송 등을 제어할 수 있습니다.
+      </div>
+    </section>
+
+    <section>
+      <h2>동작 원리</h2>
+
+      <ul>
+        <li>아두이노가 ESP8266 모듈에 AT 명령어를 보냅니다.</li>
+        <li>ESP8266은 명령어에 따라 Wi-Fi 공유기에 접속합니다.</li>
+        <li>네트워크에 연결된 뒤 서버나 웹사이트와 데이터를 주고받습니다.</li>
+        <li>받은 데이터를 다시 아두이노로 전달할 수 있습니다.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>아두이노 연결 방법</h2>
+      <p>
+        아래 연결 예시는 <strong>ESP8266 ESP-01 모듈</strong>을 기준으로 합니다.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>ESP8266 ESP-01 핀</th>
+            <th>아두이노 연결 핀</th>
+            <th>역할</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>VCC</td>
+            <td>3.3V</td>
+            <td>전원 공급</td>
+          </tr>
+
+          <tr>
+            <td>GND</td>
+            <td>GND</td>
+            <td>접지</td>
+          </tr>
+
+          <tr>
+            <td>TX</td>
+            <td>D2</td>
+            <td>ESP8266이 보내는 데이터 수신</td>
+          </tr>
+
+          <tr>
+            <td>RX</td>
+            <td>D3</td>
+            <td>ESP8266으로 데이터 전송</td>
+          </tr>
+
+          <tr>
+            <td>CH_PD / EN</td>
+            <td>3.3V</td>
+            <td>모듈 활성화</td>
+          </tr>
+
+          <tr>
+            <td>RST</td>
+            <td>3.3V 또는 미연결</td>
+            <td>리셋 제어</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="notice">
+        ESP8266은 <strong>3.3V 전원</strong>을 사용합니다.
+        5V를 직접 연결하면 모듈이 손상될 수 있습니다.
+      </div>
+    </section>
+
+    <section>
+      <h2>아두이노 예시 코드</h2>
+      <p>
+        아래 코드는 아두이노에서 ESP8266 ESP-01 모듈로 AT 명령어를 보내
+        Wi-Fi 연결을 시도하는 예시입니다.
+      </p>
+
+      <div class="code-header">
+        <span>Arduino Code</span>
+      </div>
+
+      <pre><code>#include &lt;Arduino.h&gt;
+#include &lt;SoftwareSerial.h&gt;
+
+SoftwareSerial esp8266(2, 3);
+
+String ssid = "YOUR_WIFI_NAME";
+String password = "YOUR_WIFI_PASSWORD";
+
+void sendCommand(String command, int delayTime) {
+  esp8266.println(command);
+  delay(delayTime);
+
+  while (esp8266.available()) {
+    Serial.write(esp8266.read());
+  }
+}
+
+void setup() {
+  Serial.begin(9600);
+  esp8266.begin(9600);
+
+  Serial.println("ESP8266 Wi-Fi Module Start");
+
+  sendCommand("AT", 1000);
+  sendCommand("AT+CWMODE=1", 1000);
+
+  String wifiCommand = "AT+CWJAP=\"" + ssid + "\",\"" + password + "\"";
+  sendCommand(wifiCommand, 6000);
+
+  sendCommand("AT+CIFSR", 1000);
+}
+
+void loop() {
+  if (esp8266.available()) {
+    Serial.write(esp8266.read());
+  }
+
+  if (Serial.available()) {
+    esp8266.write(Serial.read());
+  }
+}</code></pre>
+    </section>
+
+    <section>
+      <h2>코드 설명</h2>
+
+      <ul>
+        <li><strong>SoftwareSerial esp8266(2, 3)</strong>: D2를 RX, D3을 TX처럼 사용합니다.</li>
+        <li><strong>AT</strong>: ESP8266 모듈이 정상적으로 응답하는지 확인합니다.</li>
+        <li><strong>AT+CWMODE=1</strong>: Wi-Fi 모듈을 공유기에 접속하는 Station 모드로 설정합니다.</li>
+        <li><strong>AT+CWJAP</strong>: Wi-Fi 이름과 비밀번호를 사용해 공유기에 접속합니다.</li>
+        <li><strong>AT+CIFSR</strong>: Wi-Fi 연결 후 IP 주소를 확인합니다.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>사용할 때 주의할 점</h2>
+
+      <ul>
+        <li>ESP8266 ESP-01은 반드시 3.3V로 전원을 공급해야 합니다.</li>
+        <li>아두이노의 3.3V 핀은 전류가 부족할 수 있어 별도 3.3V 전원 모듈 사용을 권장합니다.</li>
+        <li>TX와 RX는 서로 교차해서 연결해야 합니다.</li>
+        <li>ESP8266의 RX 핀은 3.3V 입력이므로 아두이노 5V 신호를 직접 넣지 않는 것이 안전합니다.</li>
+        <li>Wi-Fi 이름과 비밀번호는 코드에서 직접 수정해야 합니다.</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <p>Wi-Fi 통신 모듈 사용 방법 | Circuit Design</p>
+  </footer>
+</body>
+</html>

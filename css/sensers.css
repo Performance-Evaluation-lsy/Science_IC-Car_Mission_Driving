@@ -11,7 +11,7 @@ a{
 
 main{
     background-color: #323232;
-    background-image: url('/Circuit_Design/imgs/센서\ 선택\ 배경.png');
+    background-image: url('../imgs/센서\ 선택\ 배경.png');
     min-height: 120vh;
     background-size: cover;
     background-position: center;
@@ -23,7 +23,9 @@ main{
     display: flex;
 
     padding-top: 13%;
-    padding-left: 17%;
+    padding-left: 27%;
+
+    
 }
 
 

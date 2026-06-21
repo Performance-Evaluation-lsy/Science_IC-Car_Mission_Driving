@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LED 사용 방법</title>
+  <link rel="stylesheet" href="css/led.css">
+</head>
+
+<body>
+  <div class="hero">
+    <h1>LED 사용 방법</h1>
+    <p>
+      LED는 전류가 흐르면 빛을 내는 전자 부품입니다.
+      아두이노, ESP32 같은 보드에서 상태 표시등, 경고등, 조명,
+      신호 출력 장치 등에 가장 기본적으로 사용됩니다.
+    </p>
+  </div>
+
+  <main>
+    <section>
+      <h2>LED란?</h2>
+      <p>
+        LED는 <strong>Light Emitting Diode</strong>의 줄임말로,
+        전류가 한쪽 방향으로 흐를 때 빛을 내는 다이오드입니다.
+        극성이 있기 때문에 긴 다리와 짧은 다리를 구분해서 연결해야 합니다.
+      </p>
+
+      <h3>LED 다리 구분</h3>
+      <ul>
+        <li><strong>긴 다리</strong>: +극, 애노드</li>
+        <li><strong>짧은 다리</strong>: -극, 캐소드</li>
+        <li><strong>평평한 부분이 있는 쪽</strong>: 보통 -극입니다.</li>
+      </ul>
+
+      <div class="notice">
+        LED는 반드시 <strong>저항</strong>과 함께 사용하는 것이 좋습니다.<br>
+        저항 없이 연결하면 LED나 보드 핀이 손상될 수 있습니다.
+      </div>
+    </section>
+
+    <section>
+      <h2>아두이노 연결 방법</h2>
+
+      <table>
+        <thead>
+          <tr>
+            <th>LED 부품</th>
+            <th>아두이노 연결</th>
+            <th>역할</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>LED 긴 다리</td>
+            <td>저항을 거쳐 D13</td>
+            <td>제어 신호 입력</td>
+          </tr>
+
+          <tr>
+            <td>LED 짧은 다리</td>
+            <td>GND</td>
+            <td>접지</td>
+          </tr>
+
+          <tr>
+            <td>저항</td>
+            <td>220Ω ~ 330Ω</td>
+            <td>전류 제한</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="notice">
+        LED는 방향이 반대로 연결되면 켜지지 않습니다.
+      </div>
+    </section>
+
+    <section>
+      <h2>LED 깜빡이기 예시 코드</h2>
+      <p>
+        아래 코드는 LED를 1초 동안 켜고, 1초 동안 끄는 동작을 반복합니다.
+      </p>
+
+      <div class="code-header">
+        <span>Arduino Code</span>
+      </div>
+
+      <pre><code>#include &lt;Arduino.h&gt;
+
+const int ledPin = 13;
+
+void setup() {
+  pinMode(ledPin, OUTPUT);
+}
+
+void loop() {
+  digitalWrite(ledPin, HIGH);
+  delay(1000);
+
+  digitalWrite(ledPin, LOW);
+  delay(1000);
+}</code></pre>
+    </section>
+
+    <section>
+      <h2>LED 밝기 조절 예시 코드</h2>
+      <p>
+        PWM 핀을 사용하면 LED 밝기를 조절할 수 있습니다.
+        아두이노 UNO에서는 보통 3, 5, 6, 9, 10, 11번 핀이 PWM을 지원합니다.
+      </p>
+
+      <div class="code-header">
+        <span>Arduino PWM Code</span>
+      </div>
+
+      <pre><code>#include &lt;Arduino.h&gt;
+
+const int ledPin = 9;
+
+void setup() {
+  pinMode(ledPin, OUTPUT);
+}
+
+void loop() {
+  analogWrite(ledPin, 50);
+  delay(1000);
+
+  analogWrite(ledPin, 150);
+  delay(1000);
+
+  analogWrite(ledPin, 255);
+  delay(1000);
+
+  analogWrite(ledPin, 0);
+  delay(1000);
+}</code></pre>
+    </section>
+
+    <section>
+      <h2>사용할 때 주의할 점</h2>
+
+      <ul>
+        <li>LED는 극성이 있으므로 긴 다리와 짧은 다리를 구분해야 합니다.</li>
+        <li>LED에는 220Ω 또는 330Ω 정도의 저항을 함께 연결하는 것이 좋습니다.</li>
+        <li>디지털 출력은 LED를 켜고 끄는 데 사용합니다.</li>
+        <li>PWM 출력은 LED 밝기를 조절할 때 사용합니다.</li>
+        <li>ESP32에서는 PWM 제어 방식이 아두이노 UNO와 다를 수 있습니다.</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <p>LED 사용 방법 | Circuit Design</p>
+  </footer>
+</body>
+</html>

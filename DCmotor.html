@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DC 모터 사용 방법</title>
+  <link rel="stylesheet" href="css/DCmotor.css">
+  <script src="js/menu.js"></script>
+
+</head>
+
+<body>
+    <div id="menu"></div>
+  <div class="hero">
+    <h1>DC 모터 사용 방법</h1>
+    <p>
+      DC 모터는 전류를 흘려주면 회전하는 가장 기본적인 모터입니다.
+      아두이노, ESP32 같은 보드에서 자동차 바퀴, 팬, 컨베이어 벨트,
+      로봇 구동 장치 등에 자주 사용됩니다.
+    </p>
+  </div>
+
+  <main>
+    <section id="info">
+      <h2>DC 모터란?</h2>
+      <p>
+        DC 모터는 직류 전원을 사용해 회전하는 모터입니다.
+        전원의 극성을 바꾸면 회전 방향이 바뀌고, 전압이나 PWM 신호를 조절하면
+        회전 속도를 어느 정도 제어할 수 있습니다.
+      </p>
+
+      <h3>동작 원리</h3>
+      <ul>
+        <li>모터에 전류가 흐르면 내부 코일에 자기장이 생깁니다.</li>
+        <li>코일의 자기장과 자석의 자기장이 서로 힘을 주고받습니다.</li>
+        <li>그 힘 때문에 모터의 축이 회전합니다.</li>
+        <li>전류 방향을 바꾸면 모터의 회전 방향도 바뀝니다.</li>
+      </ul>
+
+      <div class="notice">
+        DC 모터는 아두이노 핀에 직접 연결하면 안 됩니다.<br>
+        모터는 많은 전류를 사용하기 때문에 <strong>모터 드라이버</strong>를 통해 제어해야 합니다.
+      </div>
+    </section>
+
+    <section id="driver">
+      <h2>모터 드라이버가 필요한 이유</h2>
+      <p>
+        아두이노의 디지털 핀은 작은 전류만 출력할 수 있습니다.
+        하지만 DC 모터는 회전할 때 더 많은 전류가 필요합니다.
+        따라서 아두이노는 모터에 직접 전원을 주는 것이 아니라,
+        모터 드라이버에게 방향과 속도 제어 신호를 보내는 역할을 합니다.
+      </p>
+
+      <h3>대표적인 모터 드라이버</h3>
+      <ul>
+        <li><strong>L298N</strong>: DC 모터 2개 제어 가능</li>
+        <li><strong>L293D</strong>: 소형 DC 모터 제어에 자주 사용</li>
+        <li><strong>TB6612FNG</strong>: 효율이 좋고 작은 로봇에 많이 사용</li>
+      </ul>
+    </section>
+
+    <section id="wire">
+      <h2>아두이노 연결 방법</h2>
+      <p>
+        아래 연결 예시는 <strong>L298N 모터 드라이버</strong>를 기준으로 합니다.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>L298N 핀</th>
+            <th>아두이노 연결 핀</th>
+            <th>역할</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>IN1</td>
+            <td>D8</td>
+            <td>모터 방향 제어 1</td>
+          </tr>
+
+          <tr>
+            <td>IN2</td>
+            <td>D9</td>
+            <td>모터 방향 제어 2</td>
+          </tr>
+
+          <tr>
+            <td>ENA</td>
+            <td>D10</td>
+            <td>모터 속도 제어 PWM</td>
+          </tr>
+
+          <tr>
+            <td>OUT1, OUT2</td>
+            <td>DC 모터</td>
+            <td>모터 연결</td>
+          </tr>
+
+          <tr>
+            <td>12V / VCC</td>
+            <td>외부 전원 +</td>
+            <td>모터 전원 공급</td>
+          </tr>
+
+          <tr>
+            <td>GND</td>
+            <td>아두이노 GND, 외부 전원 -</td>
+            <td>공통 접지</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="notice">
+        외부 전원을 사용할 때는 <strong>아두이노 GND</strong>와
+        <strong>모터 드라이버 GND</strong>를 반드시 연결해야 합니다.
+      </div>
+    </section>
+
+    <section id="code">
+      <h2>아두이노 예시 코드</h2>
+      <p>
+        아래 코드는 DC 모터를 정방향으로 회전시키고, 잠시 멈춘 뒤,
+        역방향으로 회전시키는 예시입니다.
+      </p>
+
+      <div class="code-header">
+        <span>Arduino Code</span>
+      </div>
+
+      <pre><code>#include &lt;Arduino.h&gt;
+
+const int in1 = 8;
+const int in2 = 9;
+const int enA = 10;
+
+void setup() {
+  pinMode(in1, OUTPUT);
+  pinMode(in2, OUTPUT);
+  pinMode(enA, OUTPUT);
+}
+
+void loop() {
+  // 정방향 회전
+  digitalWrite(in1, HIGH);
+  digitalWrite(in2, LOW);
+  analogWrite(enA, 180);
+  delay(2000);
+
+  // 정지
+  digitalWrite(in1, LOW);
+  digitalWrite(in2, LOW);
+  analogWrite(enA, 0);
+  delay(1000);
+
+  // 역방향 회전
+  digitalWrite(in1, LOW);
+  digitalWrite(in2, HIGH);
+  analogWrite(enA, 180);
+  delay(2000);
+
+  // 정지
+  digitalWrite(in1, LOW);
+  digitalWrite(in2, LOW);
+  analogWrite(enA, 0);
+  delay(1000);
+}</code></pre>
+    </section>
+
+    <section>
+      <h2>사용할 때 주의할 점</h2>
+
+      <ul>
+        <li>DC 모터를 아두이노 핀에 직접 연결하지 않습니다.</li>
+        <li>모터 전원은 가능하면 외부 전원을 사용합니다.</li>
+        <li>외부 전원과 아두이노의 GND는 반드시 같이 연결해야 합니다.</li>
+        <li>PWM 값은 보통 0부터 255까지 사용합니다.</li>
+        <li>모터가 갑자기 돌면서 큰 전류를 사용할 수 있으므로 전원 용량을 확인해야 합니다.</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <p>DC 모터 사용 방법 | Circuit Design</p>
+  </footer>
+</body>
+</html>

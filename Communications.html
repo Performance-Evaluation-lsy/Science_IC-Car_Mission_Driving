@@ -1,13 +1,158 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>초음파 센서 사용 방법</title>
     <script src="js/menu.js"></script>
-    <link rel="stylesheet" href="css/look_a_element.css">
+  <link rel="stylesheet" href="css/Com.css">
 </head>
+
 <body>
-    <div id="menu"></div>
+
+    <div id = "menu"></div>
+  <div class="hero">
+    <h1>초음파 센서 사용 방법</h1>
+    <p>
+      초음파 센서는 소리를 이용해 물체와의 거리를 측정하는 센서입니다.
+      아두이노, ESP32 같은 보드에서 장애물 감지, 거리 측정, 자동차 후방 감지,
+      로봇 회피 시스템 등에 자주 사용됩니다.
+    </p>
+  </div>
+
+  <main>
+    <section id="info">
+      <h2>초음파 센서란?</h2>
+      <p>
+        초음파 센서는 사람이 들을 수 없는 높은 주파수의 소리를 내보낸 뒤,
+        그 소리가 물체에 반사되어 돌아오는 시간을 측정해서 거리를 계산합니다.
+      </p>
+
+      <h3>동작 원리</h3>
+      <ul>
+        <li><strong>Trig 핀</strong>에서 초음파 신호를 발생시킵니다.</li>
+        <li>초음파가 물체에 닿고 다시 센서로 돌아옵니다.</li>
+        <li><strong>Echo 핀</strong>에서 돌아오는 데 걸린 시간을 측정합니다.</li>
+        <li>측정한 시간을 이용해서 거리를 계산합니다.</li>
+      </ul>
+
+      <div class="notice">
+        거리 계산 공식: <strong>거리(cm) = 시간 × 0.0343 ÷ 2</strong><br>
+        2로 나누는 이유는 초음파가 물체까지 갔다가 다시 돌아오기 때문입니다.
+      </div>
+    </section>
+
+    <section id="wire">
+      <h2>아두이노 연결 방법</h2>
+
+      <table>
+        <thead>
+          <tr>
+            <th>초음파 센서 핀</th>
+            <th>아두이노 연결 핀</th>
+            <th>역할</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>VCC</td>
+            <td>5V</td>
+            <td>전원 공급</td>
+          </tr>
+
+          <tr>
+            <td>GND</td>
+            <td>GND</td>
+            <td>접지</td>
+          </tr>
+
+          <tr>
+            <td>Trig</td>
+            <td>D9</td>
+            <td>초음파 발사 신호</td>
+          </tr>
+
+          <tr>
+            <td>Echo</td>
+            <td>D10</td>
+            <td>초음파 반사 신호 측정</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="code">
+      <h2>아두이노 예시 코드</h2>
+      <p>
+        아래 코드는 초음파 센서로 거리를 측정한 뒤,
+        시리얼 모니터에 거리 값을 cm 단위로 출력하는 예시입니다.
+      </p>
+
+      <div class="code-header">
+        <span>Arduino Code</span>
+        <button class="copy-btn" onclick="copyCode()">복사</button>
+      </div>
+
+      <pre><code id="arduinoCode">#include &lt;Arduino.h&gt;
+
+const int trigPin = 9;
+const int echoPin = 10;
+
+long duration;
+float distance;
+
+void setup() {
+  Serial.begin(9600);
+
+  pinMode(trigPin, OUTPUT);
+  pinMode(echoPin, INPUT);
+}
+
+void loop() {
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+
+  duration = pulseIn(echoPin, HIGH);
+
+  distance = duration * 0.0343 / 2;
+
+  Serial.print("Distance: ");
+  Serial.print(distance);
+  Serial.println(" cm");
+
+  delay(500);
+}</code></pre>
+    </section>
+
+    <section>
+      <h2>사용할 때 주의할 점</h2>
+
+      <ul>
+        <li>센서 앞에 너무 가까운 물체가 있으면 정확도가 떨어질 수 있다.</li>
+        <li>천, 스펀지처럼 소리를 잘 흡수하는 물체는 측정이 부정확할 수 있다.</li>
+        <li>센서가 비스듬히 물체를 바라보면 초음파가 제대로 돌아오지 않을 수 있다.</li>
+        <li>ESP32에서 사용할 때는 Echo 핀의 5V 신호를 3.3V로 낮춰야 안전하다.</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <p>초음파 센서 사용 방법 | Circuit Design</p>
+  </footer>
+
+  <script>
+    function copyCode() {
+      const code = document.getElementById("arduinoCode").innerText;
+
+      navigator.clipboard.writeText(code).then(function () {
+        alert("예시 코드가 복사되었습니다.");
+      });
+    }
+  </script>
 </body>
 </html>

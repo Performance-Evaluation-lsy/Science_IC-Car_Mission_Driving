@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>조도 감지 센서 사용 방법</title>
+  <link rel="stylesheet" href="css/jodo.css">
+  <script src="js/menu.js"></script>
+</head>
+
+<body>
+    <div id="menu"></div>
+  <div class="hero">
+    <h1>조도 감지 센서 사용 방법</h1>
+    <p>
+      조도 감지 센서는 주변의 밝기를 측정하는 센서입니다.
+      아두이노, ESP32 같은 보드에서 자동 조명, 스마트팜, 밝기 감지 장치,
+      야간 감지 시스템 등에 자주 사용됩니다.
+    </p>
+  </div>
+
+  <main>
+    <section>
+      <h2>조도 감지 센서란?</h2>
+      <p>
+        조도 감지 센서는 빛의 세기에 따라 전기적 값이 변하는 센서입니다.
+        대표적으로 <strong>조도 센서 모듈</strong>이나 <strong>CdS 센서</strong>가 많이 사용됩니다.
+      </p>
+
+      <h3>동작 원리</h3>
+      <ul>
+        <li>빛이 강해지면 센서의 저항값이 변합니다.</li>
+        <li>아두이노는 이 변화를 아날로그 값으로 읽습니다.</li>
+        <li>읽은 값이 크거나 작은지 판단해서 밝기를 구분합니다.</li>
+        <li>밝기에 따라 LED, 모터, 부저 등을 제어할 수 있습니다.</li>
+      </ul>
+
+      <div class="notice">
+        조도 센서는 보통 <strong>analogRead()</strong> 함수로 값을 읽습니다.<br>
+        아두이노 UNO 기준 아날로그 값은 보통 <strong>0부터 1023</strong> 사이로 측정됩니다.
+      </div>
+    </section>
+
+    <section>
+      <h2>아두이노 연결 방법</h2>
+
+      <table>
+        <thead>
+          <tr>
+            <th>조도 센서 핀</th>
+            <th>아두이노 연결 핀</th>
+            <th>역할</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>VCC</td>
+            <td>5V</td>
+            <td>전원 공급</td>
+          </tr>
+
+          <tr>
+            <td>GND</td>
+            <td>GND</td>
+            <td>접지</td>
+          </tr>
+
+          <tr>
+            <td>AO</td>
+            <td>A0</td>
+            <td>밝기 아날로그 값 출력</td>
+          </tr>
+
+          <tr>
+            <td>DO</td>
+            <td>D2</td>
+            <td>밝음/어두움 디지털 값 출력</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="notice">
+        AO 핀은 밝기를 숫자 값으로 읽을 때 사용하고,
+        DO 핀은 특정 밝기 기준을 넘었는지만 판단할 때 사용합니다.
+      </div>
+    </section>
+
+    <section>
+      <h2>아두이노 예시 코드</h2>
+      <p>
+        아래 코드는 조도 센서의 아날로그 값을 읽고,
+        주변이 어두우면 LED를 켜는 예시입니다.
+      </p>
+
+      <div class="code-header">
+        <span>Arduino Code</span>
+      </div>
+
+      <pre><code>#include &lt;Arduino.h&gt;
+
+const int lightSensorPin = A0;
+const int ledPin = 13;
+
+int lightValue = 0;
+int darkValue = 400;
+
+void setup() {
+  Serial.begin(9600);
+
+  pinMode(ledPin, OUTPUT);
+}
+
+void loop() {
+  lightValue = analogRead(lightSensorPin);
+
+  Serial.print("Light Value: ");
+  Serial.println(lightValue);
+
+  if (lightValue &lt; darkValue) {
+    digitalWrite(ledPin, HIGH);
+  } else {
+    digitalWrite(ledPin, LOW);
+  }
+
+  delay(500);
+}</code></pre>
+    </section>
+
+    <section>
+      <h2>코드 설명</h2>
+
+      <ul>
+        <li><strong>analogRead(A0)</strong>: 조도 센서의 밝기 값을 읽습니다.</li>
+        <li><strong>lightValue</strong>: 현재 측정된 밝기 값을 저장합니다.</li>
+        <li><strong>darkValue</strong>: 어두움으로 판단할 기준값입니다.</li>
+        <li><strong>lightValue &lt; darkValue</strong>: 주변이 어두운지 판단합니다.</li>
+        <li><strong>digitalWrite()</strong>: LED를 켜거나 끕니다.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>사용할 때 주의할 점</h2>
+
+      <ul>
+        <li>조도 센서 값은 사용하는 모듈과 주변 환경에 따라 달라질 수 있습니다.</li>
+        <li>어두움 기준값인 <strong>darkValue</strong>는 직접 측정하면서 조절하는 것이 좋습니다.</li>
+        <li>센서가 빛을 직접 받는 방향에 따라 측정값이 크게 달라질 수 있습니다.</li>
+        <li>ESP32에서는 아날로그 입력 범위가 아두이노 UNO와 다를 수 있습니다.</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <p>조도 감지 센서 사용 방법 | Circuit Design</p>
+  </footer>
+</body>
+</html>

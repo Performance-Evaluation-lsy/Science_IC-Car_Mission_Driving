@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>4핀 RGB LED 사용 방법</title>
+  <link rel="stylesheet" href="css/rgb.css">
+  <script src="menu.html"></script>
+</head>
+
+<body>
+    <div id="menu"></div>
+  <div class="hero">
+    <h1>4핀 RGB LED 사용 방법</h1>
+    <p>
+      4핀 RGB LED는 빨강, 초록, 파랑 LED가 하나의 부품 안에 들어 있는 LED입니다.
+      각 색의 밝기를 조절하면 빨강, 초록, 파랑뿐만 아니라 노랑, 보라, 하늘색, 흰색 같은 다양한 색을 만들 수 있습니다.
+    </p>
+  </div>
+
+  <main>
+    <section>
+      <h2>4핀 RGB LED란?</h2>
+      <p>
+        RGB LED는 <strong>Red</strong>, <strong>Green</strong>, <strong>Blue</strong> 세 가지 색을 가진 LED입니다.
+        4개의 핀 중 3개는 각각 빨강, 초록, 파랑을 제어하는 핀이고,
+        나머지 1개는 공통으로 연결되는 핀입니다.
+      </p>
+
+      <h3>RGB LED의 종류</h3>
+      <ul>
+        <li><strong>공통 캐소드</strong>: 가장 긴 다리를 GND에 연결합니다.</li>
+        <li><strong>공통 애노드</strong>: 가장 긴 다리를 5V에 연결합니다.</li>
+      </ul>
+
+      <div class="notice">
+        이 예제 코드는 <strong>공통 캐소드 RGB LED</strong> 기준입니다.<br>
+        공통 애노드 RGB LED를 사용할 경우 코드의 밝기 값이 반대로 동작할 수 있습니다.
+      </div>
+    </section>
+
+    <section>
+      <h2>아두이노 연결 방법</h2>
+
+      <table>
+        <thead>
+          <tr>
+            <th>RGB LED 핀</th>
+            <th>아두이노 연결</th>
+            <th>역할</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>R 핀</td>
+            <td>저항을 거쳐 D9</td>
+            <td>빨간색 밝기 제어</td>
+          </tr>
+
+          <tr>
+            <td>G 핀</td>
+            <td>저항을 거쳐 D10</td>
+            <td>초록색 밝기 제어</td>
+          </tr>
+
+          <tr>
+            <td>B 핀</td>
+            <td>저항을 거쳐 D11</td>
+            <td>파란색 밝기 제어</td>
+          </tr>
+
+          <tr>
+            <td>공통 핀</td>
+            <td>GND</td>
+            <td>공통 캐소드 기준 접지</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="notice">
+        R, G, B 핀에는 각각 <strong>220Ω ~ 330Ω 저항</strong>을 연결하는 것이 좋습니다.
+        저항 없이 연결하면 LED나 아두이노 핀이 손상될 수 있습니다.
+      </div>
+    </section>
+
+    <section>
+      <h2>RGB LED 색상 변경 예시 코드</h2>
+      <p>
+        아래 코드는 RGB LED를 빨강, 초록, 파랑, 노랑, 보라, 하늘색, 흰색 순서로 켜는 예시입니다.
+      </p>
+
+      <div class="code-header">
+        <span>Arduino Code</span>
+      </div>
+
+      <pre><code>#include &lt;Arduino.h&gt;
+
+const int redPin = 9;
+const int greenPin = 10;
+const int bluePin = 11;
+
+void setColor(int red, int green, int blue) {
+  analogWrite(redPin, red);
+  analogWrite(greenPin, green);
+  analogWrite(bluePin, blue);
+}
+
+void setup() {
+  pinMode(redPin, OUTPUT);
+  pinMode(greenPin, OUTPUT);
+  pinMode(bluePin, OUTPUT);
+}
+
+void loop() {
+  setColor(255, 0, 0);
+  delay(1000);
+
+  setColor(0, 255, 0);
+  delay(1000);
+
+  setColor(0, 0, 255);
+  delay(1000);
+
+  setColor(255, 255, 0);
+  delay(1000);
+
+  setColor(255, 0, 255);
+  delay(1000);
+
+  setColor(0, 255, 255);
+  delay(1000);
+
+  setColor(255, 255, 255);
+  delay(1000);
+
+  setColor(0, 0, 0);
+  delay(1000);
+}</code></pre>
+    </section>
+
+    <section>
+      <h2>코드 설명</h2>
+
+      <ul>
+        <li><strong>redPin</strong>: 빨간색 LED를 제어하는 핀입니다.</li>
+        <li><strong>greenPin</strong>: 초록색 LED를 제어하는 핀입니다.</li>
+        <li><strong>bluePin</strong>: 파란색 LED를 제어하는 핀입니다.</li>
+        <li><strong>analogWrite()</strong>: PWM 신호로 LED 밝기를 조절합니다.</li>
+        <li><strong>setColor(255, 0, 0)</strong>: 빨간색만 최대 밝기로 켭니다.</li>
+        <li><strong>setColor(0, 0, 0)</strong>: 모든 색을 꺼서 LED를 끕니다.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>색상 값 예시</h2>
+
+      <table>
+        <thead>
+          <tr>
+            <th>색상</th>
+            <th>Red</th>
+            <th>Green</th>
+            <th>Blue</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>빨강</td>
+            <td>255</td>
+            <td>0</td>
+            <td>0</td>
+          </tr>
+
+          <tr>
+            <td>초록</td>
+            <td>0</td>
+            <td>255</td>
+            <td>0</td>
+          </tr>
+
+          <tr>
+            <td>파랑</td>
+            <td>0</td>
+            <td>0</td>
+            <td>255</td>
+          </tr>
+
+          <tr>
+            <td>노랑</td>
+            <td>255</td>
+            <td>255</td>
+            <td>0</td>
+          </tr>
+
+          <tr>
+            <td>보라</td>
+            <td>255</td>
+            <td>0</td>
+            <td>255</td>
+          </tr>
+
+          <tr>
+            <td>흰색</td>
+            <td>255</td>
+            <td>255</td>
+            <td>255</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>사용할 때 주의할 점</h2>
+
+      <ul>
+        <li>RGB LED가 공통 캐소드인지 공통 애노드인지 확인해야 합니다.</li>
+        <li>각 색상 핀에는 저항을 따로 연결하는 것이 안전합니다.</li>
+        <li>아두이노 UNO에서 밝기 조절을 하려면 PWM 핀을 사용해야 합니다.</li>
+        <li>공통 애노드 RGB LED는 공통 핀을 5V에 연결합니다.</li>
+        <li>공통 애노드 방식에서는 값이 작을수록 밝고, 값이 클수록 어두워질 수 있습니다.</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <p>4핀 RGB LED 사용 방법 | Circuit Design</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>블루투스 통신 모듈 사용 방법</title>
+  <link rel="stylesheet" href="css/blue.css">
+  <script src="js/menu.js"></script>
+</head>
+
+<body>
+<div id="menu"></div>
+  <div class="hero">
+    <h1>블루투스 통신 모듈 사용 방법</h1>
+    <p>
+      블루투스 통신 모듈은 아두이노와 스마트폰, 컴퓨터 같은 장치가
+      무선으로 데이터를 주고받을 수 있게 해주는 모듈입니다.
+      대표적으로 HC-05, HC-06 모듈이 많이 사용됩니다.
+    </p>
+  </div>
+
+  <main>
+    <section>
+      <h2>블루투스 통신 모듈이란?</h2>
+      <p>
+        블루투스 통신 모듈은 근거리 무선 통신을 위한 부품입니다.
+        아두이노에서는 주로 시리얼 통신 방식으로 블루투스 모듈과 데이터를 주고받습니다.
+      </p>
+
+      <h3>대표적인 블루투스 모듈</h3>
+      <ul>
+        <li><strong>HC-05</strong>: 마스터 모드와 슬레이브 모드를 모두 지원합니다.</li>
+        <li><strong>HC-06</strong>: 보통 슬레이브 모드만 지원합니다.</li>
+        <li><strong>HM-10</strong>: BLE 통신을 지원하는 모듈입니다.</li>
+      </ul>
+
+      <div class="notice">
+        아두이노에서 HC-05, HC-06은 보통 <strong>UART 시리얼 통신</strong>으로 제어합니다.<br>
+        즉, TX와 RX 핀을 이용해 데이터를 주고받습니다.
+      </div>
+    </section>
+
+    <section>
+      <h2>동작 원리</h2>
+
+      <ul>
+        <li>스마트폰이 블루투스 모듈과 페어링됩니다.</li>
+        <li>스마트폰 앱에서 문자를 보내면 블루투스 모듈이 데이터를 받습니다.</li>
+        <li>블루투스 모듈은 받은 데이터를 아두이노로 전달합니다.</li>
+        <li>아두이노는 받은 값에 따라 LED, 모터, 부저 등을 제어할 수 있습니다.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>아두이노 연결 방법</h2>
+      <p>
+        아래 연결 예시는 <strong>HC-05 블루투스 모듈</strong>을 기준으로 합니다.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>블루투스 모듈 핀</th>
+            <th>아두이노 연결 핀</th>
+            <th>역할</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>VCC</td>
+            <td>5V</td>
+            <td>전원 공급</td>
+          </tr>
+
+          <tr>
+            <td>GND</td>
+            <td>GND</td>
+            <td>접지</td>
+          </tr>
+
+          <tr>
+            <td>TXD</td>
+            <td>D2</td>
+            <td>블루투스 모듈이 보내는 데이터 수신</td>
+          </tr>
+
+          <tr>
+            <td>RXD</td>
+            <td>D3</td>
+            <td>블루투스 모듈로 데이터 전송</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="notice">
+        연결할 때는 <strong>TXD는 아두이노 RX 역할 핀</strong>에,
+        <strong>RXD는 아두이노 TX 역할 핀</strong>에 연결합니다.<br>
+        즉, TX와 RX는 서로 교차해서 연결합니다.
+      </div>
+    </section>
+
+    <section>
+      <h2>아두이노 예시 코드</h2>
+      <p>
+        아래 코드는 스마트폰에서 문자 <strong>1</strong>을 보내면 LED를 켜고,
+        문자 <strong>0</strong>을 보내면 LED를 끄는 예시입니다.
+      </p>
+
+      <div class="code-header">
+        <span>Arduino Code</span>
+      </div>
+
+      <pre><code>#include &lt;Arduino.h&gt;
+#include &lt;SoftwareSerial.h&gt;
+
+SoftwareSerial bluetooth(2, 3);
+
+const int ledPin = 13;
+char data;
+
+void setup() {
+  Serial.begin(9600);
+  bluetooth.begin(9600);
+
+  pinMode(ledPin, OUTPUT);
+
+  Serial.println("Bluetooth Ready");
+}
+
+void loop() {
+  if (bluetooth.available()) {
+    data = bluetooth.read();
+
+    Serial.print("Received: ");
+    Serial.println(data);
+
+    if (data == '1') {
+      digitalWrite(ledPin, HIGH);
+    } else if (data == '0') {
+      digitalWrite(ledPin, LOW);
+    }
+  }
+}</code></pre>
+    </section>
+
+    <section>
+      <h2>코드 설명</h2>
+
+      <ul>
+        <li><strong>SoftwareSerial bluetooth(2, 3)</strong>: D2를 RX, D3을 TX처럼 사용합니다.</li>
+        <li><strong>bluetooth.begin(9600)</strong>: 블루투스 통신 속도를 9600bps로 설정합니다.</li>
+        <li><strong>bluetooth.available()</strong>: 블루투스로 받은 데이터가 있는지 확인합니다.</li>
+        <li><strong>bluetooth.read()</strong>: 받은 데이터를 하나 읽습니다.</li>
+        <li><strong>data == '1'</strong>: 스마트폰에서 1을 보냈는지 확인합니다.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>사용할 때 주의할 점</h2>
+
+      <ul>
+        <li>TX와 RX는 서로 교차해서 연결해야 합니다.</li>
+        <li>HC-05, HC-06의 기본 통신 속도는 보통 9600bps입니다.</li>
+        <li>스마트폰과 연결하려면 먼저 블루투스 페어링을 해야 합니다.</li>
+        <li>HC-05의 기본 비밀번호는 보통 1234 또는 0000입니다.</li>
+        <li>ESP32는 블루투스 기능이 내장되어 있어 외부 HC-05 모듈이 필요 없는 경우도 있습니다.</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <p>블루투스 통신 모듈 사용 방법 | Circuit Design</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>진동 모터 사용 방법</title>
+  <link rel="stylesheet" href="css/zin.css">
+  <script src="js/menu.js"></script>
+</head>
+
+<body>
+
+    <div id="menu"></div>
+  <div class="hero">
+    <h1>진동 모터 사용 방법</h1>
+    <p>
+      진동 모터는 전류가 흐르면 빠르게 회전하면서 진동을 만드는 모터입니다.
+      스마트폰 알림, 게임 컨트롤러, 웨어러블 기기, 경고 장치, 터치 피드백 장치 등에 자주 사용됩니다.
+    </p>
+  </div>
+
+  <main>
+    <section>
+      <h2>진동 모터란?</h2>
+      <p>
+        진동 모터는 작은 DC 모터의 축에 무게 중심이 한쪽으로 치우친 추가 달려 있는 부품입니다.
+        모터가 회전하면 중심이 흔들리면서 진동이 발생합니다.
+      </p>
+
+      <h3>동작 원리</h3>
+      <ul>
+        <li>모터에 전류가 흐르면 내부 코일과 자석의 힘으로 축이 회전합니다.</li>
+        <li>축에 달린 추가 한쪽으로 치우쳐 있기 때문에 회전할 때 흔들림이 생깁니다.</li>
+        <li>이 흔들림이 진동으로 느껴집니다.</li>
+        <li>PWM 신호를 사용하면 진동 세기를 어느 정도 조절할 수 있습니다.</li>
+      </ul>
+
+      <div class="notice">
+        진동 모터는 작은 부품이지만 모터이기 때문에 아두이노 핀에 직접 연결하지 않는 것이 좋습니다.<br>
+        보통 <strong>트랜지스터</strong>나 <strong>모터 드라이버</strong>를 사용해 제어합니다.
+      </div>
+    </section>
+
+    <section>
+      <h2>아두이노 연결 방법</h2>
+      <p>
+        아래 연결 예시는 <strong>NPN 트랜지스터</strong>를 사용해 진동 모터를 제어하는 방식입니다.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>부품 / 핀</th>
+            <th>연결 위치</th>
+            <th>역할</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>진동 모터 +</td>
+            <td>5V</td>
+            <td>모터 전원 공급</td>
+          </tr>
+
+          <tr>
+            <td>진동 모터 -</td>
+            <td>트랜지스터 Collector</td>
+            <td>모터 전류 제어</td>
+          </tr>
+
+          <tr>
+            <td>트랜지스터 Emitter</td>
+            <td>GND</td>
+            <td>접지</td>
+          </tr>
+
+          <tr>
+            <td>트랜지스터 Base</td>
+            <td>저항을 거쳐 D9</td>
+            <td>아두이노 제어 신호 입력</td>
+          </tr>
+
+          <tr>
+            <td>다이오드</td>
+            <td>모터 양쪽에 병렬 연결</td>
+            <td>역전압 보호</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="notice">
+        트랜지스터 Base에는 보통 <strong>220Ω ~ 1kΩ 저항</strong>을 연결합니다.<br>
+        모터에서 생기는 역전압을 줄이기 위해 <strong>플라이백 다이오드</strong>를 함께 사용하는 것이 안전합니다.
+      </div>
+    </section>
+
+    <section>
+      <h2>아두이노 예시 코드</h2>
+      <p>
+        아래 코드는 진동 모터를 1초 동안 켜고, 1초 동안 끄는 동작을 반복하는 예시입니다.
+      </p>
+
+      <div class="code-header">
+        <span>Arduino Code</span>
+      </div>
+
+      <pre><code>#include &lt;Arduino.h&gt;
+
+const int motorPin = 9;
+
+void setup() {
+  pinMode(motorPin, OUTPUT);
+}
+
+void loop() {
+  digitalWrite(motorPin, HIGH);
+  delay(1000);
+
+  digitalWrite(motorPin, LOW);
+  delay(1000);
+}</code></pre>
+    </section>
+
+    <section>
+      <h2>PWM으로 진동 세기 조절하기</h2>
+      <p>
+        PWM 핀을 사용하면 진동 모터의 세기를 조절할 수 있습니다.
+        아두이노 UNO에서는 <strong>0부터 255</strong> 사이의 값을 사용합니다.
+      </p>
+
+      <div class="code-header">
+        <span>Arduino PWM Code</span>
+      </div>
+
+      <pre><code>#include &lt;Arduino.h&gt;
+
+const int motorPin = 9;
+
+void setup() {
+  pinMode(motorPin, OUTPUT);
+}
+
+void loop() {
+  analogWrite(motorPin, 80);
+  delay(1000);
+
+  analogWrite(motorPin, 180);
+  delay(1000);
+
+  analogWrite(motorPin, 255);
+  delay(1000);
+
+  analogWrite(motorPin, 0);
+  delay(1000);
+}</code></pre>
+    </section>
+
+    <section>
+      <h2>사용할 때 주의할 점</h2>
+
+      <ul>
+        <li>진동 모터를 아두이노 핀에 직접 연결하지 않는 것이 좋습니다.</li>
+        <li>모터 전류가 부족하면 진동이 약하거나 동작하지 않을 수 있습니다.</li>
+        <li>트랜지스터, 저항, 다이오드를 함께 사용하면 회로를 더 안전하게 만들 수 있습니다.</li>
+        <li>진동 모터를 오래 켜두면 발열이 생길 수 있습니다.</li>
+        <li>ESP32에서 사용할 때는 PWM 제어 방식이 아두이노 UNO와 다를 수 있습니다.</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <p>진동 모터 사용 방법 | Circuit Design</p>
+  </footer>
+</body>
+</html>
