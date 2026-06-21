@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Make a circuit</title>
+  <link rel="stylesheet" href="../css/style.css">
+  
+  <link rel="stylesheet" href="../css/menu.css">
+
+</head>
+<body>
+
+  
+<header>
+    <a href="../main.html">
+        <div class="logo">Circuit Design</div>
+    </a>
+
+    <a href="../look_a_element.html" class="text-l">회로 부품 설명 보기</a>
+    <a href="../make_a_circuit/index.html" class="text-r">회로 설계하기</a>
+
+    <button id="login">로그인</button>
+</header>
+
+
+  <main class="layout">
+    <aside class="sidebar">
+      <section class="panel">
+        <h2>개발보드</h2>
+
+        <button class="board-card active" data-board="arduino">
+          <span class="board-thumb"><img src="assets/arduino-uno.png" alt="Arduino Uno"></span>
+          <strong>Arduino Uno</strong>
+        </button>
+
+        <button class="board-card" data-board="esp32">
+          <span class="board-thumb"><img src="assets/esp32.png" alt="ESP32"></span>
+          <strong>ESP32</strong>
+        </button>
+
+        <button class="board-card" data-board="pico">
+          <span class="board-thumb"><img src="assets/pico-w.png" alt="Pi Pico W"></span>
+          <strong>Pi Pico W</strong>
+        </button>
+      </section>
+
+      <section class="panel">
+        <h2>부품 추가</h2>
+        <div class="parts">
+          <button class="part-btn" data-part="led-red">LED 빨강</button>
+          <button class="part-btn" data-part="breadboard">브레드보드</button>
+          <button class="part-btn" data-part="ultrasonic">초음파 센서</button>
+          <button class="part-btn" data-part="dc-motor">DC 모터</button>
+          <button class="part-btn" data-part="servo">서보 모터</button>
+          <button class="part-btn" data-part="resistor">저항</button>
+          <button class="part-btn" data-part="button">버튼</button>
+          <button class="part-btn" data-part="rgb-led">4핀 RGB LED</button>
+          <button class="part-btn" data-part="dot-matrix">8x8 LED 도트 매트릭스</button>
+          <button class="part-btn" data-part="potentiometer">가변저항</button>
+          <button class="part-btn" data-part="temp-sensor">온도 센서</button>
+          <button class="part-btn" data-part="light-sensor">조도 센서</button>
+          <button class="part-btn" data-part="ir-sensor">적외선 센서</button>
+          <button class="part-btn" data-part="accel-sensor">가속도 센서</button>
+          <button class="part-btn" data-part="sound-sensor">소리 센서</button>
+          <button class="part-btn" data-part="rfid-reader">RFID/NFC 리더</button>
+          <button class="part-btn" data-part="vibration-motor">진동 모터</button>
+          <button class="part-btn" data-part="motor-driver">DC모터 드라이버</button>
+          <button class="part-btn" data-part="bluetooth">블루투스 모듈</button>
+          <button class="part-btn" data-part="wifi">와이파이 모듈</button>
+          <button class="part-btn" data-part="buzzer">부저</button>
+          <button class="part-btn" data-part="sevenseg">7세그먼트</button>
+        </div>
+      </section>
+
+      
+    </aside>
+
+    <section class="workspace-wrap">
+      <div class="toolbar">
+        <button id="deleteBtn">선택 삭제</button>
+        <button id="rotateBtn">선택 회전</button>
+        <button id="bringFrontBtn">선택 앞으로</button>
+        <button id="togglePinsBtn">핀 표시/숨김</button>
+        <span id="hint">보드 이미지를 드래그하거나 노란 핀을 클릭해 배선을 시작하세요.</span>
+      </div>
+
+      <div id="workspace" class="workspace">
+        <svg id="wireLayer"></svg>
+        <div id="boardLayer"></div>
+        <div id="componentLayer"></div>
+      </div>
+    </section>
+  </main>
+<script src="script.js"></script>
+  
+</body>
+</html>
